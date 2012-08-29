@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.redmine.RedmineProjectProperty>
+      <projectName></projectName>
+      <redmineVersion>false</redmineVersion>
+    </hudson.plugins.redmine.RedmineProjectProperty>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Build:JENKINS-base</permission>
+      <permission>hudson.model.Item.Delete:JENKINS-base</permission>
+      <permission>hudson.model.Item.Read:JENKINS-base</permission>
+      <permission>hudson.model.Item.Configure:JENKINS-base</permission>
+      <permission>hudson.model.Run.Update:JENKINS-base</permission>
+      <permission>hudson.model.Item.Workspace:JENKINS-base</permission>
+      <permission>hudson.scm.SCM.Tag:JENKINS-base</permission>
+      <permission>hudson.model.Run.Delete:JENKINS-base</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM">
+    <parentJobName>base-checkout</parentJobName>
+    <criteria>Any</criteria>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Ant>
+      <targets>build-security</targets>
+    </hudson.tasks.Ant>
+  </builders>
+  <publishers>
+    <htmlpublisher.HtmlPublisher>
+      <reportTargets>
+        <htmlpublisher.HtmlPublisherTarget>
+          <reportName>Skipfish</reportName>
+          <reportDir>build/logs/skipfish</reportDir>
+          <reportFiles>index.html</reportFiles>
+          <keepAll>false</keepAll>
+          <wrapperName>htmlpublisher-wrapper.html</wrapperName>
+        </htmlpublisher.HtmlPublisherTarget>
+      </reportTargets>
+    </htmlpublisher.HtmlPublisher>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.setenv.SetEnvBuildWrapper>
+      <localVarText>GAIA_PROJECT=igc3</localVarText>
+    </hudson.plugins.setenv.SetEnvBuildWrapper>
+  </buildWrappers>
+</project>

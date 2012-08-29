@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.redmine.RedmineProjectProperty>
+      <projectName></projectName>
+      <redmineVersion>false</redmineVersion>
+    </hudson.plugins.redmine.RedmineProjectProperty>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Workspace:JENKINS-base</permission>
+      <permission>hudson.model.Item.Delete:JENKINS-base</permission>
+      <permission>hudson.model.Item.Read:JENKINS-base</permission>
+      <permission>hudson.model.Run.Update:JENKINS-base</permission>
+      <permission>hudson.scm.SCM.Tag:JENKINS-base</permission>
+      <permission>hudson.model.Item.Configure:JENKINS-base</permission>
+      <permission>hudson.model.Item.Build:JENKINS-base</permission>
+      <permission>hudson.model.Run.Delete:JENKINS-base</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>http://svn.agaru.pl/svn/igc/branches/jso/jsobiecki-ci</remote>
+        <local>.</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <excludedRegions></excludedRegions>
+    <includedRegions></includedRegions>
+    <excludedUsers></excludedUsers>
+    <excludedRevprop></excludedRevprop>
+    <excludedCommitMessages></excludedCommitMessages>
+    <workspaceUpdater class="hudson.scm.subversion.UpdateUpdater"/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>true</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>@daily</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders/>
+  <publishers>
+    <hudson.plugins.cloneworkspace.CloneWorkspacePublisher>
+      <workspaceGlob></workspaceGlob>
+      <criteria>Any</criteria>
+      <archiveMethod>TAR</archiveMethod>
+    </hudson.plugins.cloneworkspace.CloneWorkspacePublisher>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.setenv.SetEnvBuildWrapper>
+      <localVarText>GAIA_PROJECT=igc3</localVarText>
+    </hudson.plugins.setenv.SetEnvBuildWrapper>
+  </buildWrappers>
+</project>

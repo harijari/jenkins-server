@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.redmine.RedmineProjectProperty>
+      <projectName></projectName>
+      <redmineVersion>false</redmineVersion>
+    </hudson.plugins.redmine.RedmineProjectProperty>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Read:JENKINS-base</permission>
+      <permission>hudson.model.Run.Update:JENKINS-base</permission>
+      <permission>hudson.model.Item.Delete:JENKINS-base</permission>
+      <permission>hudson.model.Run.Delete:JENKINS-base</permission>
+      <permission>hudson.scm.SCM.Tag:JENKINS-base</permission>
+      <permission>hudson.model.Item.Configure:JENKINS-base</permission>
+      <permission>hudson.model.Item.Build:JENKINS-base</permission>
+      <permission>hudson.model.Item.Workspace:JENKINS-base</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>@hourly</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <concurrentBuild>false</concurrentBuild>
+  <builders/>
+  <publishers>
+    <hudson.tasks.BuildTrigger>
+      <childProjects>base-checkout,base-code-review,base-unit,base-functional,base-performance,base-documentation,base-security</childProjects>
+      <threshold>
+        <name>UNSTABLE</name>
+        <ordinal>1</ordinal>
+        <color>YELLOW</color>
+      </threshold>
+    </hudson.tasks.BuildTrigger>
+  </publishers>
+  <buildWrappers/>
+</project>
