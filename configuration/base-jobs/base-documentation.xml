@@ -42,8 +42,12 @@
     </hudson.plugins.doxygen.DoxygenArchiver>
   </publishers>
   <buildWrappers>
-    <hudson.plugins.setenv.SetEnvBuildWrapper>
-      <localVarText>GAIA_PROJECT=igc3</localVarText>
-    </hudson.plugins.setenv.SetEnvBuildWrapper>
+
+    <EnvInjectBuildWrapper>
+      <info>
+        <propertiesContent>GAIA_PROJECT=base</propertiesContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+    </EnvInjectBuildWrapper>
   </buildWrappers>
 </project>

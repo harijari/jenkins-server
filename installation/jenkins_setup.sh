@@ -8,6 +8,11 @@ apt-get update
 
 # Install newest version of jenkins
 apt-get -y install jenkins
+
+# Add jenkins user to shadow group. This is required, to make unix authentication in
+# jenkins work
+usermod -a -G shadow jenkins
+/etc/init.d/jenkins restart
 sleep 30
 
 # Get the update center ourself
@@ -19,9 +24,7 @@ sed '1d;$d' default.js > default.json
 # Now push it to the update URL
 curl -X POST -H "Accept: application/json" -d @default.json http://localhost:8080/updateCenter/byId/default/postBack --verbose
 
-# Add jenkins user to shadow group. This is required, to make authentication in
-# jenkins work
-usermod -a -G shadow jenkins
+
 
 
 # We are using unix based users and groups
@@ -30,10 +33,11 @@ usermod -a -G shadow jenkins
 groupadd JENKINS-ADMIN
 
 # One group per project, for example this one is for base-* projects 
-groupadd JENKINS-BASE
+groupadd JENKINS-base
 
 # Add jenkins admin to unix passwd
 useradd -N -s /bin/false -g JENKINS-ADMIN jenkins_admin
+passwd jenkins_admin
 # todo: Set password automagically
 
 # Retrieve jenkins cli tool
@@ -81,20 +85,23 @@ chmod 644 /var/lib/jenkins/config.xml
 java -jar jenkins-cli.jar -s http://localhost:8080/ restart 
 sleep 30
 
-# Import base projects
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base < configuration/base-jobs/base.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-checkout < configuration/base-jobs/base-checkout.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-code-review < configuration/base-jobs/base-code-review.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-documentation < configuration/base-jobs/base-documentation.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-functional < configuration/base-jobs/base-functional.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-install < configuration/base-jobs/base-install.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-performance < configuration/base-jobs/base-performance.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-security < configuration/base-jobs/base-security.xml
-java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-unit < configuration/base-jobs/base-unit.xml
+
+# Import base projects (template projects for others projects).
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base --username jenkins_admin --password jenkins < configuration/base-jobs/base.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-checkout --username jenkins_admin --password jenkins < configuration/base-jobs/base-checkout.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-code-review --username jenkins_admin --password jenkins < configuration/base-jobs/base-code-review.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-documentation --username jenkins_admin --password jenkins < configuration/base-jobs/base-documentation.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-functional --username jenkins_admin --password jenkins < configuration/base-jobs/base-functional.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-install --username jenkins_admin --password jenkins < configuration/base-jobs/base-install.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-performance --username jenkins_admin --password jenkins < configuration/base-jobs/base-performance.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-security --username jenkins_admin --password jenkins < configuration/base-jobs/base-security.xml
+java -jar jenkins-cli.jar -s http://localhost:8080 create-job base-unit --username jenkins_admin --password jenkins  < configuration/base-jobs/base-unit.xml
 
 
-
-
-
+# Now install some packages required by jenkins
 apt-get -y install git
 apt-get -y install ant
+apt-get -y install subversion
+
+# For some tests and prepare process (like fixture generation) we need mysql server and client
+apt-get -y install mysql-client mysql-server

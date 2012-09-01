@@ -53,6 +53,13 @@
     </org.jvnet.hudson.plugins.seleniumhtmlreport.SeleniumHtmlReportPublisher>
   </publishers>
   <buildWrappers>
+
+    <EnvInjectBuildWrapper>
+      <info>
+        <propertiesContent>GAIA_PROJECT=base</propertiesContent>
+        <loadFilesFromMaster>false</loadFilesFromMaster>
+      </info>
+    </EnvInjectBuildWrapper>
     <hudson.plugins.setenv.SetEnvBuildWrapper>
       <localVarText>GAIA_PROJECT=igc3</localVarText>
     </hudson.plugins.setenv.SetEnvBuildWrapper>
